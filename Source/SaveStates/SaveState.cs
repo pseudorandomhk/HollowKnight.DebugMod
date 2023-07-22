@@ -41,7 +41,7 @@ namespace DebugMod
             public bool isKinematized;
             public string[] loadedScenes;
             public string[] loadedSceneActiveScenes;
-
+            public bool quickmapStorageUsed;
 
             internal SaveStateData() { }
 
@@ -56,6 +56,7 @@ namespace DebugMod
                 lockArea = _data.lockArea;
                 isKinematized = _data.isKinematized;
                 roomSpecificOptions = _data.roomSpecificOptions;
+                quickmapStorageUsed = _data.quickmapStorageUsed;
 
                 if (_data.loadedScenes is not null)
                 {
@@ -108,6 +109,8 @@ namespace DebugMod
             var scenes = SceneWatcher.LoadedScenes;
             data.loadedScenes = scenes.Select(s => s.name).ToArray();
             data.loadedSceneActiveScenes = scenes.Select(s => s.activeSceneWhenLoaded).ToArray();
+            data.quickmapStorageUsed = HeroController.instance.gameObject.LocateMyFSM("Map Control").FsmVariables
+                .FindFsmGameObject("Inventory").Value != null;
             Console.AddLine("Saved temp state");
         }
 
@@ -408,6 +411,13 @@ namespace DebugMod
 
             //This allows the next pause to stop the game correctly
             TimeController.GenericTimeScale = 1f;
+
+            var quickmapCachedInv = HeroController.instance.gameObject.LocateMyFSM("Map Control").FsmVariables
+                .FindFsmGameObject("Inventory");
+            if (data.quickmapStorageUsed != (quickmapCachedInv.Value != null))
+            {
+                quickmapCachedInv.Value = data.quickmapStorageUsed ? GameObject.FindWithTag("Inventory Top") : null;
+            }
 
             TimeSpan loadingStateTime = loadingStateTimer.Elapsed;
             // Console.AddLine($"Loaded savestate in " + loadingStateTime.ToString(@"ss\.fff") + "s");
