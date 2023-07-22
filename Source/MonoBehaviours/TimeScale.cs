@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Modding;
+using Modding.Utils;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
@@ -43,14 +44,21 @@ namespace DebugMod.MonoBehaviours
             On.QuitToMenu.Start -= QuitToMenu_Start;
         }
          
-         private readonly MethodInfo[] FreezeCoroutines = (
-             from method in typeof(GameManager).GetMethods()
-             where method.Name.StartsWith("FreezeMoment")
-             where method.ReturnType == typeof(IEnumerator)
-             select method.GetCustomAttribute<IteratorStateMachineAttribute>() into attr
-             select attr.StateMachineType into type
-             select type.GetMethod("MoveNext", BindingFlags.NonPublic | BindingFlags.Instance)
-         ).ToArray();
+         // private readonly MethodInfo[] FreezeCoroutines = (
+         //     from method in typeof(GameManager).GetMethods()
+         //     where method.Name.StartsWith("FreezeMoment")
+         //     where method.ReturnType == typeof(IEnumerator)
+         //     select method.GetCustomAttribute<IteratorStateMachineAttribute>() into attr
+         //     select attr.StateMachineType into type
+         //     select type.GetMethod("MoveNext", BindingFlags.NonPublic | BindingFlags.Instance)
+         // ).ToArray();
+
+         private readonly MethodInfo[] FreezeCoroutines = typeof(GameManager)
+             .GetMethods()
+             .Where(method => method.Name.StartsWith("FreezeMoment"))
+             .Where(method => method.ReturnType == typeof(IEnumerator))
+             .Select(MonoMod.Utils.Extensions.GetStateMachineTarget)
+             .ToArray();
 
          private ILHook[] _coroutineHooks;
          private void ScaleFreeze(ILContext il)

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Modding;
+using Modding.Utils;
 using MonoMod.ModInterop;
 using UnityEngine;
 using UnityEngine.SceneManagement;

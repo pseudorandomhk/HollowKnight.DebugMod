@@ -8,6 +8,7 @@ using DebugMod.Hitbox;
 using GlobalEnums;
 using Modding;
 using On;
+using Modding.Utils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using USceneManager = UnityEngine.SceneManagement.SceneManager;
@@ -399,7 +400,7 @@ namespace DebugMod
 
             // Restore various things normally handled by exiting the pause menu. None of these are necessary afaik
             GameCameras.instance.ResumeCameraShake();
-            if (HeroController.SilentInstance != null)
+            if (SilentInstances.HeroController != null)
             {
                 HeroController.instance.UnPause();
             }
@@ -409,7 +410,8 @@ namespace DebugMod
             TimeController.GenericTimeScale = 1f;
 
             TimeSpan loadingStateTime = loadingStateTimer.Elapsed;
-            Console.AddLine("Loaded savestate in " + loadingStateTime.ToString(@"ss\.fff") + "s");
+            // Console.AddLine($"Loaded savestate in " + loadingStateTime.ToString(@"ss\.fff") + "s");
+            Console.AddLine($"Loaded savestate in {loadingStateTime.Seconds}.{loadingStateTime.Milliseconds:03}s");
         }
         
         //these are toggleable, as they will prevent glitches from persisting
@@ -438,7 +440,7 @@ namespace DebugMod
             //bench storage
             GameManager.instance.SetPlayerDataBool(nameof(PlayerData.atBench), false);
 
-            if (HeroController.SilentInstance != null)
+            if (SilentInstances.HeroController != null)
             {
                 if (HeroController.instance.cState.onConveyor || HeroController.instance.cState.onConveyorV || HeroController.instance.cState.inConveyorZone)
                 {
