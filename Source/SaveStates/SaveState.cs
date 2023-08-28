@@ -12,6 +12,7 @@ using Modding.Utils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using USceneManager = UnityEngine.SceneManagement.SceneManager;
+using static Shims.NET.System.Linq.Enumerable;
 
 namespace DebugMod
 {
@@ -403,7 +404,7 @@ namespace DebugMod
 
             // Restore various things normally handled by exiting the pause menu. None of these are necessary afaik
             GameCameras.instance.ResumeCameraShake();
-            if (SilentInstances.HeroController != null)
+            if (HeroController.SilentInstance != null)
             {
                 HeroController.instance.UnPause();
             }
@@ -450,7 +451,7 @@ namespace DebugMod
             //bench storage
             GameManager.instance.SetPlayerDataBool(nameof(PlayerData.atBench), false);
 
-            if (SilentInstances.HeroController != null)
+            if (HeroController.SilentInstance != null)
             {
                 if (HeroController.instance.cState.onConveyor || HeroController.instance.cState.onConveyorV || HeroController.instance.cState.inConveyorZone)
                 {
