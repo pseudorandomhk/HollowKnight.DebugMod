@@ -411,7 +411,7 @@ namespace DebugMod
             MenuButtonList.ClearAllLastSelected();
 
             //This allows the next pause to stop the game correctly
-            TimeController.GenericTimeScale = 1f;
+            Time.timeScale = 1f;
 
             var quickmapCachedInv = HeroController.instance.gameObject.LocateMyFSM("Map Control").FsmVariables
                 .FindFsmGameObject("Inventory");

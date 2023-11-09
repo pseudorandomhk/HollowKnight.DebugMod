@@ -81,15 +81,15 @@ namespace DebugMod.MonoBehaviours
          {
              yield return orig(self);
 
-             TimeController.GenericTimeScale = DebugMod.CurrentTimeScale;
+             Time.timeScale = DebugMod.CurrentTimeScale;
          }
 
          private void GameManager_SetTimeScale_1(On.GameManager.orig_SetTimeScale_float orig, GameManager self, float newTimeScale)
          {
              if (ReflectionHelper.GetField<GameManager, int>(self, "timeSlowedCount") > 1)
-                 newTimeScale = Math.Min(newTimeScale, TimeController.GenericTimeScale);
-            
-             TimeController.GenericTimeScale = (newTimeScale <= 0.01f ? 0f : newTimeScale) * DebugMod.CurrentTimeScale;
+                 newTimeScale = Math.Min(newTimeScale, Time.timeScale);
+
+            Time.timeScale = (newTimeScale <= 0.01f ? 0f : newTimeScale) * DebugMod.CurrentTimeScale;
          }
     }
 }

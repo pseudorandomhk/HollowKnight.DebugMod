@@ -209,67 +209,67 @@ namespace DebugMod
             typeof(DebugExport).ModInterop();
 
             // idk
-            DoTrollMenu();
+            //DoTrollMenu();
         }
 
-        #region Troll Menu
-        private static int chooser;
-        private static bool OpenedSave;
-        private void DoTrollMenu()
-        {
-            chooser = Random.Range(1, 1000);
-            OpenedSave = false;
-            if (chooser != 1) return;
-            GameObject DebugEasterEgg = new GameObject("DebugEasterEgg");
-            Object.DontDestroyOnLoad(DebugEasterEgg);
+        //#region Troll Menu
+        //private static int chooser;
+        //private static bool OpenedSave;
+        //private void DoTrollMenu()
+        //{
+        //    chooser = Random.Range(1, 1000);
+        //    OpenedSave = false;
+        //    if (chooser != 1) return;
+        //    GameObject DebugEasterEgg = new GameObject("DebugEasterEgg");
+        //    Object.DontDestroyOnLoad(DebugEasterEgg);
 
-            On.SetVersionNumber.Start += ChangeVersionNumber;
-            On.MenuStyleTitle.SetTitle += FixMenuTitle;
-        }
+        //    On.SetVersionNumber.Start += ChangeVersionNumber;
+        //    On.MenuStyleTitle.SetTitle += FixMenuTitle;
+        //}
 
-        private void FixMenuTitle(On.MenuStyleTitle.orig_SetTitle orig, MenuStyleTitle self, int index)
-        {
-            if (GameObject.Find("DebugEasterEgg") == null) orig(self, index);
-            else if (OpenedSave) orig(self, index);
+        //private void FixMenuTitle(On.MenuStyleTitle.orig_SetTitle orig, MenuStyleTitle self, int index)
+        //{
+        //    if (GameObject.Find("DebugEasterEgg") == null) orig(self, index);
+        //    else if (OpenedSave) orig(self, index);
 
-            else
-            {
-                Log("Running");
-                MenuStyleTitle.TitleSpriteCollection spriteCollection =
-                    index < 0 || index >= self.TitleSprites.Length
-                        ? self.DefaultTitleSprite
-                        : self.TitleSprites[index];
+        //    else
+        //    {
+        //        Log("Running");
+        //        MenuStyleTitle.TitleSpriteCollection spriteCollection =
+        //            index < 0 || index >= self.TitleSprites.Length
+        //                ? self.DefaultTitleSprite
+        //                : self.TitleSprites[index];
 
-                Texture2D RealTitle_texture = new Texture2D(1, 1);
-                using (Stream stream = Assembly.GetExecutingAssembly()
-                    .GetManifestResourceStream("DebugMod.Images.SilkNever.png"))
-                {
-                    byte[] bytes = new byte[stream.Length];
-                    stream.Read(bytes, 0, bytes.Length);
-                    RealTitle_texture.LoadImage(bytes, false);
-                    RealTitle_texture.name = "SilkNever";
-                }
+        //        Texture2D RealTitle_texture = new Texture2D(1, 1);
+        //        using (Stream stream = Assembly.GetExecutingAssembly()
+        //            .GetManifestResourceStream("DebugMod.Images.SilkNever.png"))
+        //        {
+        //            byte[] bytes = new byte[stream.Length];
+        //            stream.Read(bytes, 0, bytes.Length);
+        //            RealTitle_texture.LoadImage(bytes, false);
+        //            RealTitle_texture.name = "SilkNever";
+        //        }
 
-                var RealTitle = Sprite.Create(RealTitle_texture,
-                    new Rect(0, 0, RealTitle_texture.width, RealTitle_texture.height),
-                    new Vector2(0.5f, 0.5f), spriteCollection.Default.pixelsPerUnit, 0, SpriteMeshType.FullRect);
+        //        var RealTitle = Sprite.Create(RealTitle_texture,
+        //            new Rect(0, 0, RealTitle_texture.width, RealTitle_texture.height),
+        //            new Vector2(0.5f, 0.5f), spriteCollection.Default.pixelsPerUnit, 0, SpriteMeshType.FullRect);
 
-                self.Title.sprite = RealTitle;
-            }
-        }
+        //        self.Title.sprite = RealTitle;
+        //    }
+        //}
 
-        private void ChangeVersionNumber(On.SetVersionNumber.orig_Start orig, SetVersionNumber self)
-        {
-            Text textUi = ReflectionHelper.GetField<SetVersionNumber, Text>(self, "textUi");
+        //private void ChangeVersionNumber(On.SetVersionNumber.orig_Start orig, SetVersionNumber self)
+        //{
+        //    Text textUi = ReflectionHelper.GetField<SetVersionNumber, Text>(self, "textUi");
 
-            if (!(textUi != null)) return;
+        //    if (!(textUi != null)) return;
             
-            string VersionNumber = OpenedSave ? Constants.GAME_VERSION : "1.2.2.1";
-            StringBuilder stringBuilder = new StringBuilder(VersionNumber);
-            textUi.text = stringBuilder.ToString();
-        }
+        //    string VersionNumber = OpenedSave ? Constants.GAME_VERSION : "1.2.2.1";
+        //    StringBuilder stringBuilder = new StringBuilder(VersionNumber);
+        //    textUi.text = stringBuilder.ToString();
+        //}
 
-        #endregion
+        //#endregion
 
 
         internal static void ResetKeyBinds()
@@ -327,7 +327,7 @@ namespace DebugMod
 
         private void LoadCharacter(SaveGameData saveGameData)
         {
-            OpenedSave = true;
+            //OpenedSave = true;
             var DebugEasterEggChecker = GameObject.Find("DebugEasterEgg");
             if (DebugEasterEggChecker != null) GameObject.Destroy(DebugEasterEggChecker);
 
